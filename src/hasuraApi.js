@@ -86,7 +86,7 @@ export async function fetchTodos(userId, token) {
   requestOptions["body"] = JSON.stringify(body);
 
   try {
-    var response = await fetch(dataUrl, requestOptions);
+    var resp = await fetch(dataUrl, requestOptions);
     return resp;
   }
   catch (err) {

@@ -11,9 +11,11 @@ export default function (state = initialState, action) {
         todos: [...state.todos, { text: action.payload, completed: false, id: action.id }],
       };
     case 'REMOVE_TODO':
+      console.log('Removing TODO')
+      var modifyState = state
       return {
         ...state,
-        todos: [...state.todos.slice(0, action.index), ...state.todos.slice(action.index + 1)],
+        todos: [...modifyState.todos.slice(0, action.index), ...modifyState.todos.slice(action.index + 1)],
       };
     case 'TOGGLE_TODO':
       return {

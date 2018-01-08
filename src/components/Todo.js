@@ -24,27 +24,14 @@ class Todo extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { inputText: '', displayType: 'all' };
+    this.state = { inputText: '', displayType: 'all', removedId: null, toggledId: null };
   }
 
-  async compenentDidUpdate() {
-    resp = await fetchTodos(this.props.session.token);
-    if (resp.status !== 200){
-      if (resp.status === 503){
-        Alert.alert("Network Error", "Please check your internet connection");
-      } else {
-        Alert.alert("Unauthorized", "Please login again");
-        this.props.logout();
-      }
-    } else {
-      respBody = await resp.json();
-      this.props.dispatch({type: 'SET_FETCHED_TODOS', todos: respBody});
-    }
-  }
 
   async componentDidUpdate() {
     if (this.state.removedId != null){
-      let todoId = this.props.todos[this.state.removedId].id;
+      let index = this.state.removedId
+      let todoId = this.props.todos[index].id;
       resp = await deleteTodo(todoId, this.props.session.token);
       if (resp.status !== 200){
         if (resp.status === 503){
@@ -55,14 +42,14 @@ class Todo extends Component {
           this.props.logout();
         }
       } else {
-        this.props.removeTodo(this.state.removedId);
         this.setState({...this.state, removedId: null, loading: false});
+        this.props.removeTodo(index);
       }
     }
 
     if (this.state.toggledId != null){
       let todoId = this.props.todos[this.state.toggledId].id;
-      let currentStatus = this.props.todos.completed;
+      let currentStatus = this.props.todos[this.state.toggledId].completed;
       resp = await updateTodo(todoId, !currentStatus, this.props.session.token);
       if (resp.status !== 200){
         if (resp.status === 503){
@@ -82,10 +69,7 @@ class Todo extends Component {
   onSubmit = async () => {
     this.setState({...this.state, loading: true})
     if (this.state.inputText.length > 0) {
-      console.log(this.props.session.userId);
-      console.log(this.props.session.token);
       resp = await insertTodo(this.state.inputText, this.props.session.userId, this.props.session.token);
-      console.log(JSON.stringify(resp));
       if (resp.status !== 200){
         if (resp.status === 503){
           Alert.alert("Network Error", "Please check your internet connection");
@@ -95,6 +79,8 @@ class Todo extends Component {
         }
       } else {
         var respBody = await resp.json();
+        console.log("Insert Response: ")
+        console.log(JSON.stringify(respBody));
         var todoId = respBody.returning[0].id;
         await this.props.addTodo(this.state.inputText, todoId);//eslint-disable-line
         this.setState({
@@ -120,7 +106,7 @@ class Todo extends Component {
     this.setState({
       ...this.state,
       removedId: id,
-      loading: false
+      loading: true
     })
   }
 

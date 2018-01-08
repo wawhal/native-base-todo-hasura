@@ -1,7 +1,6 @@
 import {AsyncStorage, Alert} from 'react-native';
 
 export function addTodo(payload, id) {
-  console.log("Reached AddTodo");
   return {
     type: 'ADD_TODO',
     payload,
