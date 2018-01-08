@@ -10,7 +10,11 @@ var requestOptions = {
   }
 };
 
-export function tryAuth(username, password, task) {
+const networkErrorObj = {
+  status: 503
+}
+
+export async function tryAuth(username, password, task, dispatch) {
   var url = authUrl + task;
   var body = {
     "provider": "username",
@@ -22,17 +26,17 @@ export function tryAuth(username, password, task) {
 
   requestOptions["body"] = JSON.stringify(body);
 
-  return fetch(url, requestOptions)
-  .then((response) => {
-  	return response.json().then((resp) => {
-    })
-  })
-  .catch(function(error) {
-  	console.log('Request Failed:' + error);
-  });
+  try {
+    var resp = await fetch(url, requestOptions);
+    return resp;
+  }
+  catch (err) {
+    console.log("Request Failed: " + err);
+    return networkErrorObj;
+  }
 }
 
-export function insertTodo(todo, userId, token) {
+export async function insertTodo(todo, userId, token) {
   var body = {
     "type": "insert",
     "args": {
@@ -43,25 +47,26 @@ export function insertTodo(todo, userId, token) {
           "completed": false,
           "user_id": userId
         }
+      ],
+      "returning": [
+        "id"
       ]
     }
   }
   requestOptions.headers["Authorization"] = "Bearer" + token
   requestOptions["body"] = JSON.stringify(body);
 
-  fetch(url, requestOptions)
-  .then(function(response) {
-  	return response.json();
-  })
-  .then(function(result) {
-  	console.log("Todo Added");
-  })
-  .catch(function(error) {
-  	console.log('Request Failed:' + error);
-  });
+  try {
+    var resp = await fetch(dataUrl, requestOptions);
+    return resp;
+  }
+  catch (err) {
+    console.log("Request Failed: " + err);
+    return networkErrorObj;
+  }
 }
 
-export function fetchTodos(userId, token) {
+export async function fetchTodos(userId, token) {
   var body = {
     "type": "select",
     "args": {
@@ -76,23 +81,21 @@ export function fetchTodos(userId, token) {
       }
     }
   }
+  console.log('User ID' + userId)
   requestOptions.headers["Authorization"] = "Bearer" + token
   requestOptions["body"] = JSON.stringify(body);
 
-  fetch(url, requestOptions)
-  .then(function(response) {
-  	return response.json();
-  })
-  .then(function(result) {
-  	console.log("Todo Added");
-    return result;
-  })
-  .catch(function(error) {
-  	console.log('Request Failed:' + error);
-  });
+  try {
+    var response = await fetch(dataUrl, requestOptions);
+    return resp;
+  }
+  catch (err) {
+    console.log("Request Failed: " + err);
+    return networkErrorObj;
+  }
 }
 
-export function updateCompletion(id, complete, token) {
+export async function updateTodo(id, complete, token) {
   var body = {
     "type": "update",
     "args": {
@@ -108,19 +111,17 @@ export function updateCompletion(id, complete, token) {
   requestOptions.headers["Authorization"] = "Bearer" + token
   requestOptions["body"] = JSON.stringify(body);
 
-  fetch(url, requestOptions)
-  .then(function(response) {
-  	return response.json();
-  })
-  .then(function(result) {
-  	console.log("Todo Updated");
-  })
-  .catch(function(error) {
-  	console.log('Request Failed:' + error);
-  });
+  try {
+    var resp = await fetch(dataUrl, requestOptions);
+    return resp;
+  }
+  catch (err) {
+    console.log("Request Failed: " + err);
+    return networkErrorObj;
+  }
 }
 
-export function deleteTodo(id, token) {
+export async function deleteTodo(id, token) {
   var body = {
     "type": "delete",
     "args": {
@@ -133,14 +134,12 @@ export function deleteTodo(id, token) {
   requestOptions.headers["Authorization"] = "Bearer" + token
   requestOptions["body"] = JSON.stringify(body);
 
-  fetch(url, requestOptions)
-  .then(function(response) {
-  	return response.json();
-  })
-  .then(function(result) {
-  	console.log("Todo Deleted");
-  })
-  .catch(function(error) {
-  	console.log('Request Failed:' + error);
-  });
+  try {
+    var resp = await fetch(dataUrl, requestOptions);
+    return resp;
+  }
+  catch (err) {
+    console.log("Request Failed: " + err);
+    return networkErrorObj;
+  }
 }

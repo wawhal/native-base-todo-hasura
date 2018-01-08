@@ -8,12 +8,31 @@ import Todo from './Todo';
 
 export class Index extends React.Component {
 
-  compenentDidMount () {
-    fetchSession()
-    .then((session) => {
-      console.log("Session found. Logging in.")
-      this.props.dispatch({type: SET_SESSION, session});
-    })
+  async compenentDidMount () {
+    try {
+      var sessionJson = await AsyncStorage.getItem("@Todo:session")
+      var session = await JSON.parse(sessionJson)
+      console.log("Found Session")
+      console.log(session);
+      this.props.dispatch({type:'SET_SESSION', session})
+      var token = session.token;
+      var resp = await fetchTodos(token);
+      if (resp.status !== 200){
+        if (resp.status === 503){
+          Alert.alert("Network Error", "Please check your internet connection");
+        } else {
+          Alert.alert("Unauthorized", "Please login again");
+          this.props.dispatch({type: 'SET_SESSION', session: {}})
+        }
+      } else {
+        var respBody = await resp.json();
+        this.props.dispatch({type:'SET_FETCHED_TODOS', todos: respBody});
+      }
+    }
+    catch(err) {
+      console.error(err);
+      return err;
+    }
   }
 
   render() {
@@ -23,7 +42,7 @@ export class Index extends React.Component {
       )
     }
     else {
-      return (<Text> Yo yo </Text>)
+      return (<Todo />)
     }
   }
 
@@ -37,6 +56,7 @@ Index.propTypes = {
 function mapStateToProps(state) {
   return {
     session: state.session,
+    todos: state.todos
   };
 }
 

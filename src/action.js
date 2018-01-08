@@ -1,10 +1,11 @@
 import {AsyncStorage, Alert} from 'react-native';
 
-export function addTodo(payload) {
+export function addTodo(payload, id) {
   console.log("Reached AddTodo");
   return {
     type: 'ADD_TODO',
     payload,
+    id
   };
 }
 
@@ -30,23 +31,13 @@ export function setVisibilityFilter(displayType) {
 }
 
 export function storeSession(session) {
-  AsyncStorage.setItem("@Todo:session", JSON.stringify(session)).then(() => {
-    console.log('Session stored')
-  })
-  .catch(err => {
-    Alert.alert('Unexpected', 'Could not store token to local storage');
+  try {
+    AsyncStorage.setItem("@Todo:session", JSON.stringify(session)).then(() => {
+      console.log('Session stored');
+    })
+  }
+  catch (err) {
     console.error(err);
-  });
-}
-
-export function fetchSession() {
-  AsyncStorage.getItem("@Todo:session")
-  .then( value => JSON.parse(value))
-  .then((session) => {
-    return session;
-  })
-  .catch((err) => {
-      Alert.alert('Unauthorized', 'Login again');
-      console.error(err);
-  });
+    Alert.alert("Unexpected", "Could not store token");
+  }
 }

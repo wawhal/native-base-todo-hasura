@@ -10,32 +10,48 @@ class AuthScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-	  	usernameTextBox : '',
-	  	passwordTextBox : ''
+	  	usernameTextBox : 'rishichandra',
+	  	passwordTextBox : 'rishichandra'
 	  }
   }
 
-  handleLoginPressed = () => {
-    tryAuth(this.state.usernameTextBox, this.state.passwordTextBox, "login")
-    .then((resp) => {
-      return resp.json();
-    })
-    .then((sess) => {
-      console.log(JSON.stringify(sess))
-    })
+  handleLoginPressed = async () => {
+    var resp = await tryAuth(this.state.usernameTextBox, this.state.passwordTextBox, "login");
+    if (resp.status !== 200){
+      if (resp.status === 503){
+        Alert.alert("Network Error", "Please check your internet connection");
+      } else {
+        Alert.alert("Unauthorized", "Invalid Credentials");
+      }
+    } else {
+      var respBody = await resp.json();
+      console.log(respBody);
+      var session = {
+        token: respBody.auth_token,
+        userId: respBody.hasura_id
+      }
+      await storeSession(session);
+      this.props.dispatch({type:'SET_SESSION', session});
+    }
   }
 
-  handleSignupPressed = () => {
-    const sess = () => {
-      tryAuth(this.state.usernameTextBox, this.state.passwordTextBox, "signup")
-      .then((session) => {
-        return session;
-        console.log("==============");
-        console.log(session);
-        console.log("==============");
-      })
+  handleSignupPressed = async () => {
+    var resp = await tryAuth(this.state.usernameTextBox, this.state.passwordTextBox, "signup");
+    if (resp.status !== 200){
+      if (resp.status === 503){
+        Alert.alert("Network Error", "Please check your internet connection");
+      } else {
+        Alert.alert("Error", "Password too short/User already exists");
+      }
+    } else {
+      var respBody = resp.json();
+      var session = {
+        token: respBody.auth_token,
+        userId: respBody.hasura_id
+      }
+      await storeSession(session);
+      this.props.dispatch({type:'SET_SESSION', session});
     }
-    console.log(sess());
   }
 
   handleUsernameChange = (usernameTextBox) => {

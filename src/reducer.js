@@ -8,7 +8,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case 'ADD_TODO':
       return { ...state,
-        todos: [...state.todos, { text: action.payload, completed: false }],
+        todos: [...state.todos, { text: action.payload, completed: false, id: action.id }],
       };
     case 'REMOVE_TODO':
       return {
@@ -35,6 +35,11 @@ export default function (state = initialState, action) {
     case 'SET_SESSION':
       return {
         ...state, session: action.session
+      }
+    case 'SET_FETCHED_TODOS':
+      console.log('Reaching fetched todos');
+      return {
+        ...state, todos: action.todos
       }
     default:
   }

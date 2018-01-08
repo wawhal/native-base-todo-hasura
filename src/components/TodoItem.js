@@ -6,7 +6,7 @@ const TodoItem = ({ toggle, remove, item }) => (
   <ListItem style={{ flex: 1 }}>
     <CheckBox onPress={toggle} checked={item.completed} />
     <Text style={{ alignSelf: 'center' }}>
-      ItemText
+      {item.text}
     </Text>
     <Icon name="md-trash" style={{ color: '#000000' }} onPress={remove} />
   </ListItem>
