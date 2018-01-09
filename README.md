@@ -2,7 +2,7 @@
 
 This is a fully working React Native application which uses NativeBase for UI, Hasura for backend and redux for state management.
 
-[!App Gif](https://media.giphy.com/media/xULW8oWoTfaAOQ4dsA/giphy.gif)
+![App Gif](https://media.giphy.com/media/xULW8oWoTfaAOQ4dsA/giphy.gif)
 
 Follow the steps below to get the app running quickly.
 
