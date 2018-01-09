@@ -13,17 +13,21 @@ export class Index extends React.Component {
     try {
       var sessionJson = await AsyncStorage.getItem("@Todo:session")
       var session = await JSON.parse(sessionJson)
-      console.log("Found Session")
-      console.log(session);
-      this.props.dispatch({type:'SET_SESSION', session})
+      if (session !== null){
+        console.log("Found Session")
+        console.log(session);
+        this.props.dispatch({type:'SET_SESSION', session})
+      }
     }
     catch(err) {
+      this.props.dispatch({type:'RESET_STATE'})
       console.log('Session not found');
       console.error(err);
     }
   }
 
   render() {
+    console.log(JSON.stringify(this.props))
     if (Object.keys(this.props.session).length === 0) {
       return (
         <AuthScreen />
