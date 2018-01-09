@@ -11,7 +11,7 @@ Follow the steps below to get the app running quickly.
 ### Get the project
 
 ```
-$ hasura quickstart hasura/native-base-todo-hasura
+$ hasura quickstart roarman/native-base-todo-hasura
 ```
 
 1. This clones the project to a directory `native-base-todo-hasura`. The react-native code lies in `native-base-todo-hasura/react-native` directory.
@@ -27,7 +27,7 @@ $ cd react-native && npm install
 
 2. Get your cluster name. Run `hasura cluster status`. Copy the cluster name.
 
-3. Add your cluster name to the project. Go to `react-native/src/hasuraAPi.js`. Add your cluster name to this file.
+3. Go to `react-native/src/hasuraAPi.js`. Add your cluster name to this file.
 
 ~~~~
 clusterName = "buns47" //here "buns47" is the cluster name. Add your own.
@@ -40,3 +40,7 @@ $ git add .
 $ git commit -m "First commit"
 $ git push hasura master
 ```
+
+## Support
+
+If you are stuck anywhere or if you find any bugs or issues with this application, please raise an issue [here](https://github.com/wawhal/native-base-todo-hasura/issues).

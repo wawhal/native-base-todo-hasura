@@ -1,8 +1,9 @@
-description: A React Native todo application with NativeBase UI,  Hasura backend and Redux. 
+description: A React Native todo application with NativeBase UI,  Hasura backend and
+  Redux.
+gitUrl: https://github.com/wawhal/native-base-todo-hasura
 keywords: react native, redux, native base, todo, native, android, ios, mobile
 media:
   images:
-  - https://media.giphy.com/media/xULW8oWoTfaAOQ4dsA/giphy.gif  
-gitUrl: https://github.com/wawhal/native-base-todo-hasura
+  - https://media.giphy.com/media/xULW8oWoTfaAOQ4dsA/giphy.gif
 name: native-base-todo-hasura
 platformVersion: v0.15.3
