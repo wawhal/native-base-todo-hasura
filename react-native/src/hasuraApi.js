@@ -1,7 +1,8 @@
 import {storeSession} from './action';
 
-var authUrl = "https://auth.buns47.hasura-app.io/v1/";
-var dataUrl = "https://data.buns47.hasura-app.io/v1/query"
+var clusterName = "buns47"; //Add your own cluster name
+var authUrl = "https://auth."+clusterName+".hasura-app.io/v1/";
+var dataUrl = "https://data."+clusterName+".hasura-app.io/v1/query";
 
 var requestOptions = {
   "method": "POST",
@@ -16,6 +17,7 @@ const networkErrorObj = {
 
 export async function tryAuth(username, password, task, dispatch) {
   var url = authUrl + task;
+  console.log(url)
   var body = {
     "provider": "username",
     "data": {
