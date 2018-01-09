@@ -29,6 +29,19 @@ export function setVisibilityFilter(displayType) {
   };
 }
 
+export function logout() {
+  return {
+    type: 'RESET_STATE'
+  };
+}
+
+export function setFetchedTodos(todoList) {
+  return {
+    type: 'SET_FETCHED_TODOS',
+    todos: todoList
+  }
+}
+
 export function storeSession(session) {
   try {
     AsyncStorage.setItem("@Todo:session", JSON.stringify(session)).then(() => {

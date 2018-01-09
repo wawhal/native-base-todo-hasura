@@ -11,7 +11,6 @@ export default function (state = initialState, action) {
         todos: [...state.todos, { text: action.payload, completed: false, id: action.id }],
       };
     case 'REMOVE_TODO':
-      console.log('Removing TODO')
       var modifyState = state
       return {
         ...state,
@@ -39,9 +38,12 @@ export default function (state = initialState, action) {
         ...state, session: action.session
       }
     case 'SET_FETCHED_TODOS':
-      console.log('Reaching fetched todos');
       return {
         ...state, todos: action.todos
+      }
+    case 'RESET_STATE':
+      return {
+        ...initialState
       }
     default:
   }

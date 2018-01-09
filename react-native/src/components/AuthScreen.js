@@ -10,8 +10,8 @@ class AuthScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-	  	usernameTextBox : 'rishichandra',
-	  	passwordTextBox : 'rishichandra'
+	  	usernameTextBox : '',
+	  	passwordTextBox : ''
 	  }
   }
 
@@ -32,6 +32,7 @@ class AuthScreen extends React.Component {
       }
     } else {
       var respBody = await resp.json();
+      console.log("Login Response")
       console.log(respBody);
       var session = {
         token: respBody.auth_token,
@@ -51,7 +52,9 @@ class AuthScreen extends React.Component {
         Alert.alert("Error", "Password too short/User already exists");
       }
     } else {
-      var respBody = resp.json();
+      console.log('Signup Response');
+      var respBody = await resp.json();
+      console.log(respBody);
       var session = {
         token: respBody.auth_token,
         userId: respBody.hasura_id

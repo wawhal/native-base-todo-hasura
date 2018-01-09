@@ -16,23 +16,10 @@ export class Index extends React.Component {
       console.log("Found Session")
       console.log(session);
       this.props.dispatch({type:'SET_SESSION', session})
-      var resp = await fetchTodos(session.userId, session.token);
-      console.log(resp);
-      if (resp.status !== 200){
-        if (resp.status === 503){
-          Alert.alert("Network Error", "Please check your internet connection");
-        } else {
-          Alert.alert("Unauthorized", "Please login again");
-        }
-      } else {
-        var respBody = await resp.json();
-        console.log(respBody)
-        this.props.dispatch({type:'SET_FETCHED_TODOS', todos: respBody});
-      }
     }
     catch(err) {
+      console.log('Session not found');
       console.error(err);
-      return err;
     }
   }
 

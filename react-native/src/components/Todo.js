@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Header, Left, Body, Title, Right, Content, InputGroup, Input, List, Button, Icon, Spinner } from 'native-base';
-import { addTodo, toggleTodo, removeTodo, setVisibilityFilter } from '../action';
+import { addTodo, toggleTodo, removeTodo, setVisibilityFilter, logout, setFetchedTodos } from '../action';
 import { insertTodo, deleteTodo, updateTodo, fetchTodos } from '../hasuraApi';
 import { View, Text, Dimensions, Alert } from 'react-native';
 
@@ -34,10 +34,26 @@ class Todo extends Component {
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
       'Ionicons': require('native-base/Fonts/Ionicons.ttf')
     });
+
+    var resp = await fetchTodos(this.props.session.userId, this.props.session.token);
+    if (resp.status !== 200){
+      if (resp.status === 503){
+        Alert.alert("Network Error", "Please check your internet connection");
+      } else {
+        Alert.alert("Unauthorized", "Please login again");
+      }
+    } else {
+      var respBody = await resp.json();
+      console.log('Fetch Todo response');
+      console.log(respBody)
+      this.props.setFetchedTodos(respBody);
+    }
+
     this.setState({...this.state, loading: false});
   }
 
   async componentDidUpdate() {
+
     if (this.state.removedId != null){
       let index = this.state.removedId
       let todoId = this.props.todos[index].id;
@@ -57,9 +73,10 @@ class Todo extends Component {
     }
 
     if (this.state.toggledId != null){
-      let todoId = this.props.todos[this.state.toggledId].id;
-      let currentStatus = this.props.todos[this.state.toggledId].completed;
-      resp = await updateTodo(todoId, !currentStatus, this.props.session.token);
+      let index = this.state.toggledId;
+      let todoId = this.props.todos[index].id;
+      let currentStatus = this.props.todos[index].completed;
+      var resp = await updateTodo(todoId, !currentStatus, this.props.session.token);
       if (resp.status !== 200){
         if (resp.status === 503){
           Alert.alert("Network Error", "Please check your internet connection");
@@ -69,8 +86,9 @@ class Todo extends Component {
           this.props.logout();
         }
       } else {
-        this.props.toggleTodo(this.state.toggledId);
+        var respBody = await resp.json();
         this.setState({...this.state, toggledId: null, loading: false});
+        this.props.toggleTodo(index);
       }
     }
   }
@@ -79,7 +97,6 @@ class Todo extends Component {
     this.setState({...this.state, loading: true})
     if (this.state.inputText.length > 0) {
       resp = await insertTodo(this.state.inputText, this.props.session.userId, this.props.session.token);
-      console.log(resp);
       if (resp.status !== 200){
         if (resp.status === 503){
           Alert.alert("Network Error", "Please check your internet connection");
@@ -184,16 +201,13 @@ class Todo extends Component {
               </Button>
             </Left>
             <Body>
-              <Title>NativeBase To-do App</Title>
+              <Title>To-do List</Title>
             </Body>
             <Right />
           </Header>
 
           <Content contentContainerStyle={{ justifyContent: 'space-between' }} >
             <View >
-              <List>
-                {this.renderTodoList()}
-              </List>
 
               {this.props.todos.length > 0 && <View
                 style={{
@@ -201,7 +215,7 @@ class Todo extends Component {
                   alignSelf: 'center',
                   justifyContent: 'space-around',
                   width,
-                  marginTop: 50 }}
+                  marginTop: 20 }}
               >
                 <Button
                   transparent
@@ -228,6 +242,9 @@ class Todo extends Component {
                   </Button>
 
               </View>}
+              <List>
+                {this.renderTodoList()}
+              </List>
             </View>
           </Content>
 
@@ -281,7 +298,8 @@ function mapDispatchToProps(dispatch) {
     removeTodo: index => dispatch(removeTodo(index)),
     setVisibilityFilter: displayType => dispatch(setVisibilityFilter(displayType)),
     storeSession: session => dispatch(storeSession(session)),
-    logout: () => dispatch({type:'SET_SESSION', session: {}})
+    logout: () => dispatch(logout()),
+    setFetchedTodos: (todos) => dispatch(setFetchedTodos(todos))
   };
 }
 
