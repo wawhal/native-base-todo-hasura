@@ -43,14 +43,15 @@ class Todo extends Component {
       } else {
         Alert.alert("Unauthorized", "Please login again");
         this.props.logout();
+        this.setState({...this.state, loading: false});
       }
     } else {
       var respBody = await resp.json();
       console.log('Fetch Todo response');
       console.log(respBody)
       this.props.setFetchedTodos(respBody);
+      this.setState({...this.state, loading: false});
     }
-    this.setState({...this.state, loading: false});
   }
 
   async componentDidUpdate() {
