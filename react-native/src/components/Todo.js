@@ -24,17 +24,18 @@ class Todo extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { inputText: '', displayType: 'all', removedId: null, toggledId: null };
+    this.state = { inputText: '', displayType: 'all', removedId: null, toggledId: null, loading: true };
   }
 
   async componentWillMount() {
-    this.setState({...this.state, loading: true});
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
       'Ionicons': require('native-base/Fonts/Ionicons.ttf')
     });
+  }
 
+  async componentDidMount() {
     var resp = await fetchTodos(this.props.session.userId, this.props.session.token);
     if (resp.status !== 200){
       if (resp.status === 503){
@@ -48,7 +49,6 @@ class Todo extends Component {
       console.log(respBody)
       this.props.setFetchedTodos(respBody);
     }
-
     this.setState({...this.state, loading: false});
   }
 

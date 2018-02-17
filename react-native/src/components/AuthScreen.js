@@ -11,18 +11,15 @@ class AuthScreen extends React.Component {
     super(props);
     this.state = {
 	  	usernameTextBox : '',
-	  	passwordTextBox : '',
-      loading: false
+	  	passwordTextBox : ''
 	  }
   }
 
   async componentWillMount() {
-    this.setState({...this.state, loading: true});
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
-    this.setState({...this.state, loading: false});
   }
 
   handleLoginPressed = async () => {

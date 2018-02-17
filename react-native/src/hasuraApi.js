@@ -1,21 +1,22 @@
 import {storeSession} from './action';
 
-var clusterName = "afterbirth27"; //Add your own cluster name
+var clusterName = "adenoidal82"; //Add your own cluster name
 var authUrl = "https://auth."+clusterName+".hasura-app.io/v1/";
 var dataUrl = "https://data."+clusterName+".hasura-app.io/v1/query";
 
-var requestOptions = {
-  "method": "POST",
-  "headers": {
-    "Content-Type": "application/json"
-  }
-};
 
 const networkErrorObj = {
   status: 503
 }
 
 export async function tryAuth(username, password, task, dispatch) {
+
+  var requestOptions = {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
   var url = authUrl + task;
   console.log(url)
   var body = {
@@ -39,6 +40,13 @@ export async function tryAuth(username, password, task, dispatch) {
 }
 
 export async function insertTodo(todo, userId, token) {
+
+  var requestOptions = {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
   var body = {
     "type": "insert",
     "args": {
@@ -69,6 +77,13 @@ export async function insertTodo(todo, userId, token) {
 }
 
 export async function fetchTodos(userId, token) {
+
+  var requestOptions = {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
   var body = {
     "type": "select",
     "args": {
@@ -98,6 +113,13 @@ export async function fetchTodos(userId, token) {
 }
 
 export async function updateTodo(id, complete, token) {
+
+  var requestOptions = {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
   var body = {
     "type": "update",
     "args": {
@@ -124,6 +146,13 @@ export async function updateTodo(id, complete, token) {
 }
 
 export async function deleteTodo(id, token) {
+
+  var requestOptions = {
+    "method": "POST",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
   var body = {
     "type": "delete",
     "args": {
