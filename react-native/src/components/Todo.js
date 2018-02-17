@@ -42,6 +42,7 @@ class Todo extends Component {
         Alert.alert("Network Error", "Please check your internet connection");
       } else {
         Alert.alert("Unauthorized", "Please login again");
+        this.props.logout();
       }
     } else {
       var respBody = await resp.json();
