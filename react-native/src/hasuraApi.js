@@ -1,6 +1,6 @@
 import {storeSession} from './action';
 
-var clusterName = "buns47"; //Add your own cluster name
+var clusterName = "afterbirth27"; //Add your own cluster name
 var authUrl = "https://auth."+clusterName+".hasura-app.io/v1/";
 var dataUrl = "https://data."+clusterName+".hasura-app.io/v1/query";
 
