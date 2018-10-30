@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Container, Header, Left, Body, Title, Right, Content, InputGroup, Input, List, Button, Icon, Spinner } from 'native-base';
-import { addTodo, toggleTodo, removeTodo, setVisibilityFilter, logout, setFetchedTodos } from '../action';
-import { insertTodo, deleteTodo, updateTodo, fetchTodos } from '../hasuraApi';
 import { View, Text, Dimensions, Alert } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const Filters = ({filter, setFilter}) => {
   return (

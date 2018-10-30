@@ -8,7 +8,7 @@ export default class App extends Component { // eslint-disable-line
     return (
       <ApolloProvider client={client}>
         <Index />
-      <ApolloProvider>
+      </ApolloProvider>
     );
   }
 }

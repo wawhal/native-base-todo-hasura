@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Header, Left, Body, Title, Right, Content, InputGroup, Input, List, Button, Icon, Spinner } from 'native-base';
-import { addTodo, toggleTodo, removeTodo, setVisibilityFilter, logout, setFetchedTodos } from '../action';
-import { insertTodo, deleteTodo, updateTodo, fetchTodos } from '../hasuraApi';
 import { View, Text, Dimensions, Alert } from 'react-native';
 
 import InputBox from './InputBox';
-import TodoItem from './TodoItem';
+import TodoList from './TodoList';
+import Filters from './Filters';
 
 const { width } = Dimensions.get('window');
 
@@ -44,15 +42,15 @@ class Todo extends Component {
           </Body>
           <Right />
         </Header>
+        <InputBox />
         <Content contentContainerStyle={{ justifyContent: 'space-between' }} >
           <View >
-            <Filters filter={this.state.filter} setFilter={this.setFilter}/>            
+            <Filters filter={this.state.filter} setFilter={this.setFilter}/>
             <List>
               <TodoList filter={this.state.filter}/>
             </List>
           </View>
         </Content>
-        <InputBox />
       </Container>
     );
   }

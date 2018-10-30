@@ -4,15 +4,15 @@ import { Text, ListItem, Body } from 'native-base';
 import UpdateCheckbox from './UpdateCheckbox';
 import DeleteButton from './DeleteButton';
 
-const TodoItem = ({ item }) => (
+const TodoItem = ({ todo }) => (
   <ListItem style={{ flex: 1 }}>
-    <UpdateCheckbox item={item} />
+    <UpdateCheckbox todo={todo} />
     <Body>
       <Text style={{ alignSelf: 'center' }}>
-        {item.text}
+        {todo.text}
       </Text>
     </Body>
-    <DeleteButton item={item} />
+    <DeleteButton todo={todo} />
   </ListItem>
 );
 

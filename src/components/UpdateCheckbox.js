@@ -12,7 +12,7 @@ mutation ($id: Int, $is_completed: Boolean) {
       }
     },
     _set: {
-      is_completed: $is_completed
+      is_completed: $is_completed,
       updated_at: "now()"
     }
   ) {
@@ -31,20 +31,23 @@ fragment todoResp on todo {
 }
 `;
 
-const UpdateCheckbox = ({item}) => (
+const UpdateCheckbox = ({todo}) => (
   <Mutation
-    mutation: {updateTodo}
-    variables: {{
-      id: item.id,
-      is_completed: !item.is_completed
+    mutation={updateTodo}
+    variables={{
+      id: todo.id,
+      is_completed: !todo.is_completed
     }}
   >
     {
-      (updateTodo, { loading, data, error}) => {
+      (mutate, { loading, data, error}) => {
+        const submit = () => {
+          mutate();
+        }
         return (
           <CheckBox
-            onPress={updateTodo}
-            checked={item.is_completed}
+            onPress={submit}
+            checked={todo.is_completed}
             disabled={loading}
           /> 
         )     

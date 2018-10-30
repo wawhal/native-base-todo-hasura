@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { Container, Header, Left, Body, Title, Right, Content, InputGroup, Input, List, Button, Icon, Spinner } from 'native-base';
 import gql from 'graphql-tag';
+import TodoItem from './TodoItem';
+import { Text, View } from 'react-native';
 
-const fetchTodos= gql`
+export const fetchTodos= gql`
 query ($filter: todo_bool_exp) {
-  todo (where: $filter) {
+  todo (where: $filter, order_by: {  id: asc } ) {
     id
     text
     is_completed
@@ -17,11 +19,11 @@ query ($filter: todo_bool_exp) {
 
 const TodoList = ({item, filter}) => (
   <Query
-    query: {fetchTodos}
+    query={fetchTodos}
     variables={{
       filter: filter === 'all' ? {} : {
-        is_completed: filter === 'active' ? false : true
-      } 
+        is_completed: { _eq: filter === 'active' ? false : true }
+      }
     }}
   >
     {
@@ -43,18 +45,19 @@ const TodoList = ({item, filter}) => (
         if (data.todo.length === 0) {
           return (
             <View style={{ alignItems: 'center', paddingTop: 10 }}>
-              <Text>No {filter === 'all' ? '' : `${filter} `)}todos</Text>
+              <Text>No {filter === 'all' ? '' : `${filter} `}todos</Text>
             </View>
           );
         }
-        return data.todo.map((item) => {
+        return data.todo.map((todo) => (
           <TodoItem
-            item={item}
+            todo={todo}
+            key={todo.id}
           />
-        });
+        ));
       }
     }
   </Query>
 )
 
-export default CompletedCheckbox;
+export default TodoList;
