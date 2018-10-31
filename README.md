@@ -34,7 +34,7 @@ Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?
 
 3. Go to the GraphQL Engine console by going to its URL. Click on the `Data` tab on the top and create a table called todo.
 
-   ![create-todo-table-image](assets/create-todo-table.png)
+   ![todo-table-image](assets/todo-table.png)
 
 4. Finally, run the app with [Expo](expo.io)
 
