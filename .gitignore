@@ -1,2 +1,2 @@
-node_modules/
-.expo/
+react-native/node_modules/
+react-native/.expo/
